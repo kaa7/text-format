@@ -1,0 +1,164 @@
+Carapcea Andrei-Antonio 313CD
+
+Tema 2 : Formatare de text
+===============================================================================
+
+  Acest fisier prezinta detalii de implementare a temei 2 formatare de text.
+
+===============================================================================
+
+1. Structura temei
+
+Functionalitatea ceruta este impartita in mai multe fisiere sursa pentru o
+modularitate mai buna. Astfel, tema contine urmatoarele fisierele sursa:
+
+1.1. tema2.c
+
+Reprezinta sursa "principala" a programului. Se ocupa cu primirea parametrilor
+si verificarea corectitudinii acestora (daca sunt in formatul specificat, daca
+fisierele exista, etc.), citeste si scrie in fisiere.
+
+1.2. syntax_checker.c
+
+Verifica corectitudinea sintaxei unei operatii transmise.
+
+1.3. parser.c
+
+Parseaza o operatie si argumentele ei si aplica operatia corespunzatoare.
+
+1.4. utils.c
+
+Contine functii utilitare utilizate in restul programului si define-uri care
+specifica numarul maxim de linii, numarul maxim de caractere pe linie, etc.
+
+Exemple: sursa contine o functie care scoate trailing whitespace dintr-un
+string, functii de comparatie de stringuri care pot fi utilizate de qsort, etc.
+
+Restul de surse contin functionalitatea specifica unor anumite operatii
+(wrap.c, align_left.c, etc.).
+
+Am separat functionalitatea parserului de cea a verificarii validitatii
+operatiilor pentru a face codul mai lizibil si din consideratii de eficienta.
+Daca verificarea corectitudinii unei operatii ar fi facuta tot de parser,
+atunci el ar aplica operatii pana cand ar intalni o operatie invalida. Ori,
+daca se intalneste o astfel de operatie, fisierul de intrare nu trebuie
+modificat, deci toate modificarile aduse textului pana la momentul acela au
+fost inutile. Pentru un numar maxim de 10 operatii nu ar fi un impact
+sesizabil, dar daca se doreste extinderea acestui numar, atunci s-ar putea sa
+apara o diferenta.
+
+===============================================================================
+
+2. Stocarea textului
+
+Textul este stocat ca un vector de linii, deci o matrice de caractere. Tinand
+cont ca in reprezentarea interna a programului textul este stocat pe linii,
+atunci se poate elimina caracterul newline ('\n') de la finalul fiecarei linii.
+
+===============================================================================
+
+3. Wrap
+
+Se construieste o lista inlantuita de linii din textul oferit. Se parcurge
+lista si, daca la un moment dat, o linie are o lungime mai mare decat lungimea
+maxima specificata, atunci ea "se sparge".
+
+Se cauta un break point la care sa se termine linia curenta. Cum se gaseste
+acesta? Daca la pozitia corespunzatoare lungimii maxime se afla un spatiu,
+atunci se poate "sparge" linia acolo. Daca, in schimb, se gaseste un caracter,
+atunci se parcurge string-ul inapoi pana la inceputul cuvantului (pana cand se
+intalneste alt caracter spatiu), iar pozitia corespunzatoare va delimita un
+break point.
+
+La pozitia break point-ului, in stringul liniei curente se adauga null
+terminator (pentru a specifica finalul liniei). Din restul sirului de caractere
+ramas (de la break point pana la finalul liniei), se construieste un nou nod si
+se insereaza in lista inlantuita dupa linia curenta.
+
+Daca la un moment dat linia este prea scurta, atunci se elimina whitespace-ul
+de la finalul liniei curente si de la inceputul liniei urmatoare si se
+concateneaza cele doua. De asemenea, se elimina urmatorul nod din lista
+inlantuita.
+
+De ce o lista inlantuita? Pentru ca altfel ar trebui shiftat vectorul de linii
+(cand se sparge o linie prea lunga, ceea ce ramane trebuie adaugat pe linia
+urmatoare, sau atunci cand se gaseste o linie mai scurta trebuie scoasa o 
+linie). Fiecare shiftare este o operatie de O(n), care se poate aplica pentru
+fiecare linie, deci, in total, O(n^2). Pentru o lista inlantuita, inserarea,
+respectiv stergerea unei linii se face in O(1), deci in total O(n), cu un cost
+de preprocesare de O(n).
+
+===============================================================================
+
+4. Align Left
+
+Se scoate whitespace-ul de la inceputul fiecarei linii din intervalul
+specificat.
+
+===============================================================================
+
+5. Align Right
+
+Pentru fiecare linie din intervalul specificat, se calculeaza numarul de spatii
+care trebuie adaugate ca lungimea acestora sa devina egala cu lungimea celei
+mai lungi linii din fisier. Apoi, se adauga la inceputul fiecarei linii numarul
+aferent de spatii.
+
+===============================================================================
+
+6. Center
+
+La fel ca la align right, doar ca numarul de spatii care trebuie adaugate va fi
+jumatate din cel precedent. Mai exact, daca se noteaza lungimea maxima a unei
+linii cu max_len si lungimea liniei curente cu cur_len, atunci numarul de
+spatii care trebuie adaugat va fi parte intreaga din (max_len - cur_len)/2 + 1.
+Sau, mai specific : (int)ceil((max_len - cur_len) / 2.0).
+
+===============================================================================
+
+7. Justify
+
+Se numara spatiile dintre cuvinte. Sa presupunem ca exista k asemenea spatii.
+La finalul operatiei, linia trebuie sa aiba lungimea egala cu maximul
+lungimiilor liniilor din fisier. Deci trebuie adaugat un numar de spatii egal
+cu:
+
+diff = max_len - cur_len
+
+Trebuie adaugate diff - k spatii in linia curenta. Cum se distribuie uniform?
+Se adauga diff / k (unde impartirea este impartire intreaga) spatii la fiecare
+din spatiile gasite anterior. Mai raman diff % k spatii care pot fi distribuite
+uniform in orice mod (atat timp cat nu se adauga in acelasi loc de mai multe
+ori, dar nu este cazul, caci diff % k < k). Asa ca am decis sa adaug cate un
+spatiu la primele diff % k spatii gasite initial.
+
+===============================================================================
+
+8. Paragrafe
+
+Se gaseste inceputul paragrafelor din intervalul precizat. O linie este inceput
+de paragraf daca are inaintea ei o linie goala (sau este prima linie din
+fisier). Se realizeaza indentarea ceruta asupra acestor linii.
+
+===============================================================================
+
+9. Liste
+
+Mai intai se aliniaza liniile din intervalul precizat la stanga. Apoi, se
+adauga la inceputul fiecarei linii caracterele corespunzatoare operatiei.
+Trebuie sa se aibe grija sa nu se adauge trailing whitespace in cazul in care
+linia este goala.
+
+===============================================================================
+
+10. Liste ordonate
+
+Se sorteaza liniile din intervalul cerut dupa cum este specificat in operatie
+folosind functia qsort, apoi se procedeaza la fel ca in cazul unei liste
+obisnuite.
+
+===============================================================================
+
+11. Cazuri speciale
+
+Cazurile speciale se trateaza precum este specificat in enuntul problemei.
