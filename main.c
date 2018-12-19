@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     p = strtok(argv[1], DELIMITERS);
     while(p != NULL) {
         strcpy(op[op_count++], p);
-        if(op_count >= 10) {
+        if(op_count >= MAX_NO_OPS) {
             printf("Too many operations! Only the first 10 will "
                    "be applied.\n");
             break;
