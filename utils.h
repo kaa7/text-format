@@ -8,6 +8,7 @@
 #define DELIMITERS ",\t"
 #define MAX_LINES 1000
 #define MAX_CHARS_PER_LINE 1000
+#define MAX_NO_OPS 10
 
 void remove_extra_whitespace(char *str);
 
