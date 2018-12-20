@@ -1,4 +1,3 @@
-// Carapcea Andrei-Antonio 313CD
 #ifndef SYNTAX_CHECKER_H
 #define SYNTAX_CHECKER_H
 #include "utils.h"

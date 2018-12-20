@@ -1,4 +1,3 @@
-// Carapcea Andrei-Antonio 313CD
 #ifndef LIST_H
 #define LIST_H
 #include "utils.h"

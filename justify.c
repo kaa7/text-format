@@ -1,4 +1,3 @@
-// Carapcea Andrei-Antonio 313CD
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

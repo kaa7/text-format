@@ -1,4 +1,3 @@
-// Carapcea Andrei-Antonio 313CD
 #ifndef JUSTIFY_H
 #define JUSTIFY_H
 #include "utils.h"

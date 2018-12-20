@@ -1,4 +1,3 @@
-// Carapcea Andrei-Antonio 313CD
 #ifndef ALIGN_LEFT_H
 #define ALIGN_LEFT_H
 #include "utils.h"

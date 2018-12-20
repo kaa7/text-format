@@ -1,4 +1,3 @@
-// Carapcea Andrei-Antonio 313CD
 #ifndef CENTER_H
 #define CENTER_H
 #include "utils.h"

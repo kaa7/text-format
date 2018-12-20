@@ -1,4 +1,3 @@
-// Carapcea Andrei-Antonio 313CD
 #ifndef PARSER_H
 #define PARSER_H
 #include "utils.h"

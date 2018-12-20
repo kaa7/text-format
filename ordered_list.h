@@ -1,4 +1,3 @@
-// Carapcea Andrei-Antonio 313CD
 #ifndef OREDERED_LIST_H
 #define OREDERED_LIST_H
 #include "utils.h"

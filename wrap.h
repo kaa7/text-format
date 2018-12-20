@@ -1,4 +1,3 @@
-// Carapcea Andrei-Antonio 313CD
 #ifndef WRAP_H
 #define WRAP_H
 #include "utils.h"

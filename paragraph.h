@@ -1,4 +1,3 @@
-// Carapcea Andrei-Antonio 313CD
 #ifndef PARAGRAPH_H
 #define PARAGRAPH_H
 #include "utils.h"
