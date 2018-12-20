@@ -215,7 +215,7 @@ a) apples
 b) oranges
 c) cherries
 ```
-Applying O b - z on:
+Applying **O b - z** on:
 ```
 Monica
 Erica
